@@ -1,0 +1,43 @@
+Arguments: 
+  /Users/orihorih/.anyenv/envs/nodenv/versions/16.18.0/bin/node /Users/orihorih/.anyenv/envs/nodenv/versions/16.18.0/bin/yarn add discord.js @types/discord.js
+
+PATH: 
+  /Users/orihorih/.anyenv/envs/nodenv/versions/16.18.0/bin:/Users/orihorih/.anyenv/envs/nodenv/libexec:/Users/orihorih/.anyenv/envs/nodenv/plugins/nodenv-vars/bin:/Users/orihorih/.anyenv/envs/nodenv/plugins/node-build/bin:/Users/orihorih/.anyenv/envs/rbenv/shims:/Users/orihorih/.anyenv/envs/pyenv/shims:/Users/orihorih/.anyenv/envs/nodenv/shims:/Users/orihorih/.anyenv/envs/exenv/shims:/Users/orihorih/.anyenv/bin:/opt/android/android-sdk/platform-tools:/opt/android/android-sdk/cmdline-tools/latest/bin:/opt/android/android-sdk/cmdline-tools/bin:/opt/android/android-sdk/cmdline-tools/cmdline-tools/latest/bin:/Users/orihorih/.anyenv/envs/rbenv/bin:/Users/orihorih/.anyenv/envs/pyenv/bin:/Users/orihorih/.anyenv/envs/nodenv/bin:/Users/orihorih/.anyenv/envs/exenv/bin:/Users/orihorih/.anyenv/envs/erlenv/bin:/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin/brew:/Users/orihorih/.anyenv/bin:/opt/homebrew/bin/:/opt/homebrew/opt/openssl@3/bin:/Users/orihorih/.anyenv/envs/erlenv/shims:/Users/orihorih/.anyenv/envs/exenv/shims:/Users/orihorih/.anyenv/envs/nodenv/shims:/Users/orihorih/.anyenv/envs/pyenv/shims:/Users/orihorih/.anyenv/envs/rbenv/shims:/Users/orihorih/google-cloud-sdk/bin:/Users/orihorih/.anyenv/envs/erlenv/bin:/Users/orihorih/.anyenv/envs/exenv/bin:/Users/orihorih/.anyenv/envs/nodenv/bin:/Users/orihorih/.anyenv/envs/pyenv/bin:/Users/orihorih/.anyenv/envs/rbenv/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.18.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@types%2fdiscord.js: Not found
+      at Request.params.callback [as _callback] (/Users/orihorih/.anyenv/envs/nodenv/versions/16.18.0/lib/node_modules/yarn/lib/cli.js:66145:18)
+      at Request.self.callback (/Users/orihorih/.anyenv/envs/nodenv/versions/16.18.0/lib/node_modules/yarn/lib/cli.js:140890:22)
+      at Request.emit (node:events:513:28)
+      at Request.<anonymous> (/Users/orihorih/.anyenv/envs/nodenv/versions/16.18.0/lib/node_modules/yarn/lib/cli.js:141862:10)
+      at Request.emit (node:events:513:28)
+      at IncomingMessage.<anonymous> (/Users/orihorih/.anyenv/envs/nodenv/versions/16.18.0/lib/node_modules/yarn/lib/cli.js:141784:12)
+      at Object.onceWrapper (node:events:627:28)
+      at IncomingMessage.emit (node:events:525:35)
+      at endReadableNT (node:internal/streams/readable:1358:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "music-bot",
+    "version": "1.0.0",
+    "description": "A music bot for server - Random",
+    "main": "dist/index.js",
+    "author": "Hiro Degawa",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
