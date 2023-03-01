@@ -14,11 +14,6 @@ const commands = new SlashCommandBuilder()
   })
   .addSubcommand((option) => {
     return option
-      .setName('status')
-      .setDescription('現在のBotの状態を表示します。')
-  })
-  .addSubcommand((option) => {
-    return option
       .setName('play')
       .setDescription(
         '指定したキーワードのYoutubeの検索結果、またはプレイリストの音楽を再生します。'
@@ -36,11 +31,6 @@ const commands = new SlashCommandBuilder()
     return option
       .setName('stop')
       .setDescription('音楽の再生を即座に停止します。')
-  })
-  .addSubcommand((option) => {
-    return option
-      .setName('kick')
-      .setDescription('Botをボイスチャンネルから即座に退出させます。')
   })
 
 const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN || '')

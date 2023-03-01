@@ -1,23 +1,23 @@
 // コマンドのリスナー
 
 import { Client } from 'discord.js'
-import { help, play, status } from './function'
+import { help, play, stop } from './function'
 
 const listenCommands = (client: Client) => {
   client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return
 
     switch (interaction.options.getSubcommand()) {
-      case 'status':
-        status(interaction)
-        break
-
       case 'help':
         help(interaction)
         break
 
       case 'play':
         play(interaction)
+        break
+
+      case 'stop':
+        stop(interaction)
         break
 
       default:

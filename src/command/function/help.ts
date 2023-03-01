@@ -19,10 +19,6 @@ const helpEmbed = new EmbedBuilder()
     value: '\n',
   })
   .addFields({
-    name: '/music status',
-    value: '\n現在のBotの状態を表示します',
-  })
-  .addFields({
     name: '\n',
     value: '\n',
   })
@@ -38,14 +34,6 @@ const helpEmbed = new EmbedBuilder()
   .addFields({
     name: '/music stop',
     value: '\n音楽の再生を停止します。',
-  })
-  .addFields({
-    name: '\n',
-    value: '\n',
-  })
-  .addFields({
-    name: '/music kick',
-    value: '\nボイスチャンネルから退出します。',
   })
 
 export default helpCommand
