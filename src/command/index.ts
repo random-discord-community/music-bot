@@ -21,7 +21,10 @@ const listenCommands = (client: Client) => {
         break
 
       default:
-        interaction.reply('このコマンドは存在しないか、開発中です。')
+        interaction.reply({
+          ephemeral: true,
+          content: 'このコマンドは存在しないか、開発中です。',
+        })
     }
   })
 }
