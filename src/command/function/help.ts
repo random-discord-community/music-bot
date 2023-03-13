@@ -5,35 +5,28 @@ const helpCommand = (interaction: ChatInputCommandInteraction) => {
   interaction.reply({ embeds: [helpEmbed], ephemeral: true })
 }
 
-// TODO: 改行の書き方なんとかしたい
-
 const helpEmbed = new EmbedBuilder()
   .setColor(0xffffff)
-  .setTitle('Usage - 使い方')
-  .addFields({
-    name: '/music help',
-    value: '\nこのBotの使い方を表示します',
-  })
-  .addFields({
-    name: '\n',
-    value: '\n',
-  })
-  .addFields({
-    name: '\n',
-    value: '\n',
-  })
-  .addFields({
-    name: '/music play `[検索キーワード] または [youtubeのURL]`',
-    value:
-      '\n指定したキーワードのYoutubeの検索結果、またはプレイリストの音楽を再生します。',
-  })
-  .addFields({
-    name: '\n',
-    value: '\n',
-  })
-  .addFields({
-    name: '/music stop',
-    value: '\n音楽の再生を停止します。',
-  })
+  .setTitle('Conductor - 音響ボット')
+  .setImage(
+    'https://media.discordapp.net/attachments/748794967232610315/1084768018820771871/Conductor.png?width=1920&height=560'
+  )
+  .addFields(
+    {
+      name: '/music help',
+      value: 'このBotの使い方を表示します',
+    },
+    { name: '\u200B', value: '\n' },
+    {
+      name: '/music play `[検索キーワード] または [youtubeのURL]`',
+      value:
+        '指定したキーワードのYoutubeの検索結果、またはプレイリストの音楽を再生します。',
+    },
+    { name: '\u200B', value: '\n' },
+    {
+      name: '/music stop',
+      value: '音楽の再生を停止します。',
+    }
+  )
 
 export default helpCommand

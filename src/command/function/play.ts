@@ -1,25 +1,47 @@
+import fs from 'fs'
+
 import {
   createAudioPlayer,
   createAudioResource,
+  entersState,
   getVoiceConnection,
   joinVoiceChannel,
   NoSubscriberBehavior,
   VoiceConnectionStatus,
 } from '@discordjs/voice'
-import { ChatInputCommandInteraction, GuildMember } from 'discord.js'
+import {
+  ChatInputCommandInteraction,
+  Client,
+  EmbedBuilder,
+  GuildMember,
+} from 'discord.js'
 import ytdl from 'ytdl-core'
 import ytsr, { Video } from 'ytsr'
 
 const playCommand = async (interaction: ChatInputCommandInteraction) => {
   const sender = interaction.member as GuildMember
-  if (!sender.voice) return
+
+  if (!sender.voice.channelId) {
+    interaction.reply({
+      ephemeral: true,
+      content: 'まずボイスチャンネルに接続してください。',
+    })
+    return
+  }
 
   const query = interaction.options.getString('query') || ''
-  const video = query ? await findVideo(query) : null
+  const video = query && (await findVideo(query))
 
-  video
-    ? playMusic(interaction, video, sender)
-    : interaction.reply('該当する動画がありませんでした。')
+  if (!video) {
+    interaction.reply('該当する動画がありませんでした。')
+    return
+  }
+
+  // console.log(video.url)
+
+  const videoEmbed = createVideoEmbed(video, interaction.client, sender)
+
+  playMusic(interaction, video, sender, videoEmbed)
 }
 
 const findVideo = async (keyword: string) => {
@@ -28,16 +50,18 @@ const findVideo = async (keyword: string) => {
 
   if (!resultUrl) return null
 
-  const totalResult = await ytsr(resultUrl, { hl: 'ja', limit: 1 })
+  const filteredResult = await ytsr(resultUrl, { hl: 'ja', limit: 5 })
 
-  const sanitizedResult = (totalResult.items[0] as unknown) as Video
-  return sanitizedResult.url
+  const totalResult = filteredResult.items as Video[]
+
+  return totalResult.filter((video) => video.duration)[0]
 }
 
 const playMusic = async (
   interaction: ChatInputCommandInteraction,
-  videoUrl: string,
-  sender: GuildMember
+  video: Video,
+  sender: GuildMember,
+  videoEmbed: EmbedBuilder
 ) => {
   if (!interaction.guildId || !interaction.guild?.voiceAdapterCreator) return
 
@@ -53,23 +77,22 @@ const playMusic = async (
     behaviors: {
       noSubscriber: NoSubscriberBehavior.Pause,
     },
-  })
-
-  player.on('subscribe', () => {
-    interaction.reply('再生します！')
-  })
-
-  player.on('error', (error) => {
-    console.error(`Error: ${error.message}`)
+    debug: true,
   })
 
   connection.subscribe(player)
 
-  const readableAudio = ytdl(videoUrl, {
+  const readableAudio = ytdl(video.url, {
     filter: 'audioonly',
     quality: 'highestaudio',
     highWaterMark: 32 * 1024 * 1024,
   })
+
+  ytdl(video.url, {
+    filter: 'audioonly',
+    quality: 'highestaudio',
+    highWaterMark: 32 * 1024 * 1024,
+  }).pipe(fs.createWriteStream('video.mp4'))
 
   const resource = createAudioResource(readableAudio, {
     inlineVolume: true,
@@ -77,7 +100,57 @@ const playMusic = async (
 
   resource.volume?.setVolume(0.08)
 
+  connection.on(VoiceConnectionStatus.Disconnected, async () => {
+    try {
+      await Promise.race([
+        entersState(connection, VoiceConnectionStatus.Signalling, 5_000),
+        entersState(connection, VoiceConnectionStatus.Connecting, 5_000),
+      ])
+    } catch (error) {
+      connection.destroy()
+    }
+  })
+
+  player.on('subscribe', () => {
+    interaction.reply({ embeds: [videoEmbed] })
+  })
+
+  player.on('error', (error) => {
+    console.error(`Play error: ${error.message}`)
+  })
+
+  connection.on('error', (error) => {
+    console.error(`Connection error: ${error.message}`)
+  })
+
+  // player.on('stateChange', (state) => {
+  //   console.log(`player: ${state.status}`)
+  // })
+
+  // connection.on('stateChange', (state) =>
+  //   console.log(`connection: ${state.status}`)
+  // )
+
   player.play(resource)
+}
+
+const createVideoEmbed = (
+  video: Video,
+  client: Client,
+  sender: GuildMember
+) => {
+  return new EmbedBuilder()
+    .setColor(0xffffff)
+    .setTitle(`Now playing: ${video.title}`)
+    .setURL(video.url)
+    .setAuthor({
+      name: client.user?.username || '',
+      iconURL: client.user?.avatarURL() || '',
+    })
+    .setImage(video.bestThumbnail.url)
+    .setFooter({
+      text: `${video.duration} Queued by: ${sender.nickname}` || '',
+    })
 }
 
 export default playCommand
